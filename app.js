@@ -1,12 +1,12 @@
 function a() {
-    function b() {
-        var c;
-        console.log(c);
-    }
+	function b() {
+		var c;
+		console.log(c);
+	}
 
-    var c = 4;
-    console.log(c);
-    b();
+	var c = 4;
+	console.log(c);
+	b();
 }
 console.log(34);
 var c = 1;
