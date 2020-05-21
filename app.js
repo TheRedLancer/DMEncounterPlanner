@@ -1,15 +1,12 @@
-function a() {
-	function b() {
-		var c;
-		console.log(c);
-	}
-
-	var c = 4;
-	console.log(c);
-	b();
+function Person(first, last) {
+	this.first = first;
+	this.last = last;
+	this.fullName = function() {
+		return this.first + ' ' + this.last;
+	};
+	this.fullNameReversed = function() {
+		return this.last + ', ' + this.first;
+	};
 }
-console.log(34);
-var c = 1;
-console.log(c);
-a();
-console.log(c);
+var Zach = new Person('Zach', 'Burnaby');
+console.log('Made by ' + Zach.fullName());
