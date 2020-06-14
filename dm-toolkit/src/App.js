@@ -7,7 +7,7 @@ function App() {
 	return (
 		<div className="App">
 			<Clock />
-			<HelloWorld />
+			<HelloWorld text="This is an alert" />
 		</div>
 	);
 }

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const HelloWorld = () => {
-	function sayHello() {
-		alert('I love Madelline');
+export default class HelloWorld extends Component {
+	clickHandler(h) {
+		alert(h);
 	}
 
-	return <button onClick={sayHello}>Click Me!</button>;
-};
-
-export default HelloWorld;
+	render() {
+		return (
+			<div>
+				<button onClick={this.clickHandler.bind(null, this.props.text)}>Click Me! </button>
+			</div>
+		);
+	}
+}
