@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 export default class HelloWorld extends Component {
-	clickHandler(h) {
+	handleClick(h) {
 		alert(h);
 	}
 
 	render() {
 		return (
 			<div>
-				<button onClick={this.clickHandler.bind(null, this.props.text)}>Click Me! </button>
+				<button onClick={() => this.handleClick(this.props.text)}>Click Me!</button>
 			</div>
 		);
 	}
