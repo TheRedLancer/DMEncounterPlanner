@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Clock from './Clock';
-import TextBox from './TextBox';
+import Clock from './Clock.js';
+import SubmitBox from './SubmitBox';
 
 function App() {
 	return (
 		<div className="App">
 			<Clock />
-			<TextBox />
+			<SubmitBox />
 		</div>
 	);
 }
