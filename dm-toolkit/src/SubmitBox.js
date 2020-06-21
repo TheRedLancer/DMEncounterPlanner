@@ -8,7 +8,6 @@ export default class SubmitBox extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleFocus = this.handleFocus.bind(this);
-		this.noteList = [ 'Note 1', 'Note 2' ];
 	}
 
 	handleChange(event) {
@@ -16,8 +15,6 @@ export default class SubmitBox extends Component {
 	}
 
 	handleSubmit(event) {
-		this.noteList.push(this.state.value);
-		this.forceUpdate();
 		event.preventDefault();
 	}
 
@@ -32,7 +29,7 @@ export default class SubmitBox extends Component {
 			<div>
 				<form onSubmit={this.handleSubmit} onFocus={this.handleFocus}>
 					<label>
-						<p1>Take some notes!</p1>
+						<p>Take some notes!</p>
 						<br />
 						<textarea
 							type="text"
@@ -45,7 +42,6 @@ export default class SubmitBox extends Component {
 					</label>
 					<input type="submit" value="Save" />
 				</form>
-				<ul>{this.noteList.map((n) => <li key={n.id}>{n}</li>)}</ul>
 			</div>
 		);
 	}
