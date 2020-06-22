@@ -6,6 +6,7 @@ export default class SubmitBox extends Component {
 		super(props);
 		this.state = {
 			value: '',
+			titleValue: '',
 			noteList: []
 		};
 		this.idCounter = 0;
@@ -31,7 +32,7 @@ export default class SubmitBox extends Component {
 				noteTitle={this.state.titleValue}
 				noteText={this.state.value}
 				_handleDelete={this.handleDelete}
-				id={this.idCounter++}
+				id={++this.idCounter}
 			/>
 		);
 		this.forceUpdate();
