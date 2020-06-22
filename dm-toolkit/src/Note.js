@@ -6,7 +6,6 @@ export default class Note extends Component {
 		this.noteText = this.props.noteText;
 	}
 	handleDelete() {
-		alert('Tried to delete note.');
 		this.props._handleDelete(this.props.id);
 	}
 

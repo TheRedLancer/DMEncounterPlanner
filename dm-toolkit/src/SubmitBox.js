@@ -6,10 +6,9 @@ export default class SubmitBox extends Component {
 		super(props);
 		this.state = {
 			value: 'Type here',
-			noteList: [],
-			idCounter: 0
+			noteList: []
 		};
-
+		this.idCounter = 0;
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleFocus = this.handleFocus.bind(this);
@@ -23,7 +22,7 @@ export default class SubmitBox extends Component {
 	handleSubmit(event) {
 		event.preventDefault();
 		this.state.noteList.push(
-			<Note noteText={this.state.value} _handleDelete={this.handleDelete} id={this.state.idCounter++} />
+			<Note noteText={this.state.value} _handleDelete={this.handleDelete} id={this.idCounter++} />
 		);
 		this.forceUpdate();
 	}
@@ -35,10 +34,8 @@ export default class SubmitBox extends Component {
 	}
 
 	handleDelete(id) {
-		alert(id);
-		console.log(this.state.noteList);
 		this.setState((prevState) => ({
-			noteList: prevState.noteList.filter((element) => element.id != id)
+			noteList: prevState.noteList.filter((element) => element.props.id !== id)
 		}));
 	}
 
@@ -62,7 +59,7 @@ export default class SubmitBox extends Component {
 				</form>
 
 				{this.state.noteList.map((listitem) => (
-					<li key={listitem.id} className="list-group-item list-group-item-primary">
+					<li key={listitem.props.id} className="list-group-item list-group-item-primary">
 						{listitem}
 					</li>
 				))}
