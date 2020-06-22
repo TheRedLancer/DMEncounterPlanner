@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import Note from './Note';
 
 export default class SubmitBox extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { value: 'Type here' };
+		this.state = {
+			value: 'Type here',
+			noteList: []
+		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,6 +20,8 @@ export default class SubmitBox extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
+		this.state.noteList.push(<Note noteText={this.state.value} />);
+		this.forceUpdate();
 	}
 
 	handleFocus() {
@@ -42,6 +48,10 @@ export default class SubmitBox extends Component {
 					</label>
 					<input type="submit" value="Save" />
 				</form>
+
+				{this.state.noteList.map((listitem) => (
+					<li className="list-group-item list-group-item-primary">{listitem}</li>
+				))}
 			</div>
 		);
 	}

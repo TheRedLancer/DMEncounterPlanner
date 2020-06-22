@@ -5,7 +5,9 @@ export default class Note extends Component {
 		super(props);
 		this.noteText = this.props.noteText;
 	}
-	handleClick() {}
+	handleClick() {
+		alert('Tried to delete note.');
+	}
 
 	render() {
 		return (
