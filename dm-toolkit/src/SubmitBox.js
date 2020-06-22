@@ -62,7 +62,7 @@ export default class SubmitBox extends Component {
 				</form>
 
 				{this.state.noteList.map((listitem) => (
-					<li key={listitem.id++} className="list-group-item list-group-item-primary">
+					<li key={listitem.id} className="list-group-item list-group-item-primary">
 						{listitem}
 					</li>
 				))}

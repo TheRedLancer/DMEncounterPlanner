@@ -4,7 +4,6 @@ export default class Note extends Component {
 	constructor(props) {
 		super(props);
 		this.noteText = this.props.noteText;
-		this.handleDelete = this.handleDelete.bind(this);
 	}
 	handleDelete() {
 		alert('Tried to delete note.');

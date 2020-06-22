@@ -1,3 +1,3 @@
 git add -A
-git commit -m "working on delete"
+git commit -m "working on delete2"
 git push
