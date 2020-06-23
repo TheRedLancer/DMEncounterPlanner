@@ -13,8 +13,8 @@ export default class SubmitBox extends Component {
 		this.handleTitleChange = this.handleTitleChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleFocus = this.handleFocus.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
+		this.handleClearNote = this.handleClearNote.bind(this);
 	}
 
 	handleTitleChange(event) {
@@ -38,24 +38,25 @@ export default class SubmitBox extends Component {
 		this.forceUpdate();
 	}
 
-	handleFocus() {
-		if (this.state.value === 'Type here') {
-			this.setState({ value: '' });
-		}
-	}
-
 	handleDelete(id) {
 		this.setState((prevState) => ({
 			noteList: prevState.noteList.filter((element) => element.props.id !== id)
 		}));
 	}
 
+	handleClearNote() {
+		this.setState({
+			titleValue: '',
+			value: ''
+		});
+	}
+
 	render() {
 		return (
 			<div>
-				<form onSubmit={this.handleSubmit} onFocus={this.handleFocus}>
+				<p>Take some notes! Click on the note title to expand a note.</p>
+				<form onSubmit={this.handleSubmit}>
 					<label>
-						<p>Take some notes!</p>
 						<br />
 						<textarea
 							type="text"
@@ -77,8 +78,8 @@ export default class SubmitBox extends Component {
 						<br />
 					</label>
 					<input type="submit" value="Save" />
+					<input type="button" value="Clear" onClick={this.handleClearNote} />
 				</form>
-
 				{this.state.noteList.map((listitem) => (
 					<li key={listitem.props.id} className="list-group-item list-group-item-primary">
 						{listitem}
