@@ -4,7 +4,7 @@ export default class Note extends Component {
 	constructor(props) {
 		super(props);
 		this.noteText = this.props.noteText;
-		this.title = this.props.noteTitle === '' ? 'Note ' + this.props.id : this.props.noteTitle;
+		this.title = this.props.noteTitle;
 		this.state = { showNote: false };
 		this.handleClick = this.handleClick.bind(this);
 	}

@@ -17,6 +17,29 @@ export default class SubmitBox extends Component {
 		this.handleClearNote = this.handleClearNote.bind(this);
 	}
 
+	loadList() {
+		this.setState({
+			noteList: [
+				<Note
+					noteTitle={localStorage.getItem('titleList')}
+					noteText={localStorage.getItem('noteList')}
+					_handleDelete={this.handleDelete}
+					id={++this.idCounter}
+				/>
+			]
+		});
+	}
+
+	clearNoteLists() {
+		localStorage.setItem('noteList', '');
+		localStorage.setItem('titleList', '');
+	}
+
+	componentDidMount() {
+		localStorage.getItem('noteList') ? this.loadList() : this.clearNoteLists();
+		console.log(this.state.noteList);
+	}
+
 	handleTitleChange(event) {
 		this.setState({ titleValue: event.target.value });
 	}
@@ -27,9 +50,11 @@ export default class SubmitBox extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
+		localStorage.setItem('noteList', this.state.value);
+		localStorage.setItem('titleList', this.state.titleValue);
 		this.state.noteList.push(
 			<Note
-				noteTitle={this.state.titleValue}
+				noteTitle={this.state.titleValue === '' ? 'Note ' + this.idCounter : this.state.titleValue}
 				noteText={this.state.value}
 				_handleDelete={this.handleDelete}
 				id={++this.idCounter}

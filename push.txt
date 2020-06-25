@@ -1,3 +1,3 @@
 git add -A
-git commit -m "attempt add store.js"
+git commit -m "add save one note"
 git push
