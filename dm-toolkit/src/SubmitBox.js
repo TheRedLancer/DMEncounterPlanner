@@ -21,8 +21,8 @@ export default class SubmitBox extends Component {
 		this.setState({
 			noteList: [
 				<Note
-					noteTitle={localStorage.getItem('titleList')}
-					noteText={localStorage.getItem('noteList')}
+					noteTitle={localStorage.getItem('titleStoreList')}
+					noteText={localStorage.getItem('noteStoreList')}
 					_handleDelete={this.handleDelete}
 					id={++this.idCounter}
 				/>
@@ -31,13 +31,23 @@ export default class SubmitBox extends Component {
 	}
 
 	clearNoteLists() {
-		localStorage.setItem('noteList', '');
-		localStorage.setItem('titleList', '');
+		localStorage.setItem('noteStoreList', JSON.stringify());
+		localStorage.setItem('titleStoreList', JSON.stringify());
 	}
 
 	componentDidMount() {
-		localStorage.getItem('noteList') ? this.loadList() : this.clearNoteLists();
-		console.log(this.state.noteList);
+		localStorage.getItem('noteStoreList') ? this.loadList() : this.clearNoteLists();
+		var list = [ [ 'num1', 'prr1' ], [ 'num2', 'prr2' ], [ 'num3', 'prr3' ] ];
+		console.log(list[2][1]);
+		console.log(JSON.stringify(list));
+		console.log(JSON.parse(JSON.stringify(list)));
+		var jsonParsed = JSON.parse(JSON.stringify(list));
+		console.log(jsonParsed);
+		jsonParsed.push([ 'num4', 'prr4' ]);
+		console.log(jsonParsed[3][0]);
+		console.log(jsonParsed);
+		console.log(JSON.stringify(jsonParsed));
+		//console.log(this.state.noteList);
 	}
 
 	handleTitleChange(event) {
@@ -50,8 +60,8 @@ export default class SubmitBox extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		localStorage.setItem('noteList', this.state.value);
-		localStorage.setItem('titleList', this.state.titleValue);
+		localStorage.setItem('noteStoreList', this.state.value);
+		localStorage.setItem('titleStoreList', this.state.titleValue);
 		this.state.noteList.push(
 			<Note
 				noteTitle={this.state.titleValue === '' ? 'Note ' + this.idCounter : this.state.titleValue}
