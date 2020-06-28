@@ -9,7 +9,6 @@ export default class SubmitBox extends Component {
 			titleValue: '',
 			noteList: []
 		};
-		this.idCounter = 0;
 		this.handleTitleChange = this.handleTitleChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,8 +17,12 @@ export default class SubmitBox extends Component {
 	}
 
 	loadList() {
+		var list = JSON.parse(localStorage.getItem('storeNoteList'));
+		console.log(list);
 		this.setState({
-			noteList: JSON.parse(localStorage.getItem('storeNoteList'))
+			noteList: list.map((note) => (
+				<Note noteTitle={note.title} noteText={note.noteText} _handleDelete={this.handleDelete} id={note.id} />
+			))
 		});
 	}
 
@@ -30,6 +33,10 @@ export default class SubmitBox extends Component {
 
 	componentDidMount() {
 		localStorage.getItem('storeNoteList') ? this.loadList() : this.clearNoteLists();
+		if (!localStorage.getItem('storeID')) {
+			localStorage.setItem('storeID', '0');
+		}
+		console.log(this.state.noteList);
 	}
 
 	handleTitleChange(event) {
@@ -47,10 +54,15 @@ export default class SubmitBox extends Component {
 				noteTitle={this.state.titleValue === '' ? 'Note ' + this.idCounter : this.state.titleValue}
 				noteText={this.state.value}
 				_handleDelete={this.handleDelete}
-				id={++this.idCounter}
+				id={this.getID()}
 			/>
 		);
-		localStorage.setItem('storeNoteList', JSON.stringify(this.state.noteList));
+		var list = this.state.noteList.map((note) => ({
+			title: note.props.noteTitle,
+			noteText: note.props.noteText,
+			id: note.props.id
+		}));
+		localStorage.setItem('storeNoteList', JSON.stringify(list));
 		this.forceUpdate();
 	}
 
@@ -65,6 +77,12 @@ export default class SubmitBox extends Component {
 			titleValue: '',
 			value: ''
 		});
+	}
+
+	getID() {
+		var currID = Number(localStorage.getItem('storeID')) + 1;
+		localStorage.setItem('storeID', currID);
+		return currID;
 	}
 
 	render() {
