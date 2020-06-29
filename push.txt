@@ -1,3 +1,3 @@
 git add -A
-git commit -m "load and save multiple notes"
+git commit -m "fix delete storage update"
 git push

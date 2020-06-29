@@ -39,6 +39,10 @@ export default class SubmitBox extends Component {
 		console.log(this.state.noteList);
 	}
 
+	componentWillUnmount() {
+		this.updateLSList();
+	}
+
 	handleTitleChange(event) {
 		this.setState({ titleValue: event.target.value });
 	}
@@ -57,19 +61,28 @@ export default class SubmitBox extends Component {
 				id={this.getID()}
 			/>
 		);
+		this.updateLSList();
+		this.forceUpdate();
+	}
+
+	updateLSList() {
 		var list = this.state.noteList.map((note) => ({
 			title: note.props.noteTitle,
 			noteText: note.props.noteText,
 			id: note.props.id
 		}));
 		localStorage.setItem('storeNoteList', JSON.stringify(list));
-		this.forceUpdate();
 	}
 
 	handleDelete(id) {
-		this.setState((prevState) => ({
-			noteList: prevState.noteList.filter((element) => element.props.id !== id)
-		}));
+		this.setState(
+			(prevState) => ({
+				noteList: prevState.noteList.filter((element) => element.props.id !== id)
+			}),
+			() => {
+				this.updateLSList();
+			}
+		);
 	}
 
 	handleClearNote() {
