@@ -53,12 +53,13 @@ export default class SubmitBox extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
+		var noteID = this.getID();
 		this.state.noteList.push(
 			<Note
-				noteTitle={this.state.titleValue === '' ? 'Note ' + this.idCounter : this.state.titleValue}
+				noteTitle={this.state.titleValue === '' ? 'Note ' + noteID : this.state.titleValue}
 				noteText={this.state.value}
 				_handleDelete={this.handleDelete}
-				id={this.getID()}
+				id={noteID}
 			/>
 		);
 		this.updateLSList();
