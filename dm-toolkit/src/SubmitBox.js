@@ -14,15 +14,18 @@ export default class SubmitBox extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleClearNote = this.handleClearNote.bind(this);
+		this.editNote = this.editNote.bind(this);
+		this.clearNoteLists = this.clearNoteLists.bind(this);
+		this.loadList = this.loadList.bind(this);
+		this.updateLSList = this.updateLSList.bind(this);
+		this.getID = this.getID.bind(this);
 	}
 
 	loadList() {
 		var list = JSON.parse(localStorage.getItem('storeNoteList'));
 		console.log(list);
 		this.setState({
-			noteList: list.map((note) => (
-				<Note noteTitle={note.title} noteText={note.noteText} _handleDelete={this.handleDelete} id={note.id} />
-			))
+			noteList: JSON.parse(localStorage.getItem('storeNoteList'))
 		});
 	}
 
@@ -54,23 +57,35 @@ export default class SubmitBox extends Component {
 	handleSubmit(event) {
 		event.preventDefault();
 		var noteID = this.getID();
-		this.state.noteList.push(
-			<Note
-				noteTitle={this.state.titleValue === '' ? 'Note ' + noteID : this.state.titleValue}
-				noteText={this.state.value}
-				_handleDelete={this.handleDelete}
-				id={noteID}
-			/>
-		);
+		this.state.noteList.push({
+			title: this.state.titleValue === '' ? 'Note ' + noteID : this.state.titleValue,
+			noteText: this.state.value,
+			id: noteID
+		});
 		this.updateLSList();
 		this.forceUpdate();
 	}
 
+	editNote(id, newTitle, newText) {
+		this.setState(
+			(prevState) => ({
+				noteList: prevState.noteList.map((note) => ({
+					title: note.id === id ? newTitle : note.title,
+					noteText: note.id === id ? newText : note.noteText,
+					id: note.id
+				}))
+			}),
+			() => {
+				this.updateLSList();
+			}
+		);
+	}
+
 	updateLSList() {
 		var list = this.state.noteList.map((note) => ({
-			title: note.props.noteTitle,
-			noteText: note.props.noteText,
-			id: note.props.id
+			title: note.title,
+			noteText: note.noteText,
+			id: note.id
 		}));
 		localStorage.setItem('storeNoteList', JSON.stringify(list));
 	}
@@ -78,7 +93,7 @@ export default class SubmitBox extends Component {
 	handleDelete(id) {
 		this.setState(
 			(prevState) => ({
-				noteList: prevState.noteList.filter((element) => element.props.id !== id)
+				noteList: prevState.noteList.filter((element) => element.id !== id)
 			}),
 			() => {
 				this.updateLSList();
@@ -129,8 +144,14 @@ export default class SubmitBox extends Component {
 					<input type="button" value="Clear" onClick={this.handleClearNote} />
 				</form>
 				{this.state.noteList.map((listitem) => (
-					<li key={listitem.props.id} className="list-group-item list-group-item-primary">
-						{listitem}
+					<li key={listitem.id} className="list-group-item list-group-item-primary">
+						<Note
+							id={listitem.id}
+							noteTitle={listitem.title}
+							noteText={listitem.noteText}
+							_handleDelete={this.handleDelete}
+							_editNote={this.editNote}
+						/>
 					</li>
 				))}
 			</div>
