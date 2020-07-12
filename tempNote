@@ -1,0 +1,10 @@
+get url/id
+    return response object
+        {"data" : int}
+get url/noteList
+    { data: []note }
+    format of JSON object
+
+post url/noteList
+in: {[]note}
+out: {data: null}

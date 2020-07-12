@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Note from './Note';
+import * as API from './API.js';
 
 export default class SubmitBox extends Component {
 	constructor(props) {
@@ -9,6 +10,7 @@ export default class SubmitBox extends Component {
 			titleValue: '',
 			noteList: []
 		};
+
 		this.handleTitleChange = this.handleTitleChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,7 +20,6 @@ export default class SubmitBox extends Component {
 		this.clearNoteLists = this.clearNoteLists.bind(this);
 		this.loadList = this.loadList.bind(this);
 		this.updateLSList = this.updateLSList.bind(this);
-		this.getID = this.getID.bind(this);
 	}
 
 	loadList() {
@@ -36,9 +37,6 @@ export default class SubmitBox extends Component {
 
 	componentDidMount() {
 		localStorage.getItem('storeNoteList') ? this.loadList() : this.clearNoteLists();
-		if (!localStorage.getItem('storeID')) {
-			localStorage.setItem('storeID', '0');
-		}
 		console.log(this.state.noteList);
 	}
 
@@ -56,14 +54,16 @@ export default class SubmitBox extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		var noteID = this.getID();
-		this.state.noteList.push({
-			title: this.state.titleValue === '' ? 'Note ' + noteID : this.state.titleValue,
-			noteText: this.state.value,
-			id: noteID
+		API.getID().then((resid) => {
+			console.log(resid);
+			this.state.noteList.push({
+				title: this.state.titleValue === '' ? 'Note ' + resid : this.state.titleValue,
+				noteText: this.state.value,
+				id: resid
+			});
+			this.updateLSList();
+			this.forceUpdate();
 		});
-		this.updateLSList();
-		this.forceUpdate();
 	}
 
 	editNote(id, newTitle, newText) {
@@ -106,12 +106,6 @@ export default class SubmitBox extends Component {
 			titleValue: '',
 			value: ''
 		});
-	}
-
-	getID() {
-		var currID = Number(localStorage.getItem('storeID')) + 1;
-		localStorage.setItem('storeID', currID);
-		return currID;
 	}
 
 	render() {
