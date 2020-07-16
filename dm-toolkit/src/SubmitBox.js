@@ -19,29 +19,34 @@ export default class SubmitBox extends Component {
 		this.editNote = this.editNote.bind(this);
 		this.clearNoteLists = this.clearNoteLists.bind(this);
 		this.loadList = this.loadList.bind(this);
-		this.updateLSList = this.updateLSList.bind(this);
+		this.updateServerList = this.updateServerList.bind(this);
 	}
 
 	loadList() {
-		var list = JSON.parse(localStorage.getItem('storeNoteList'));
-		console.log(list);
-		this.setState({
-			noteList: JSON.parse(localStorage.getItem('storeNoteList'))
+		API.getNoteList().then((resNoteList) => {
+			console.log(resNoteList);
+			this.setState({
+				noteList: resNoteList
+			});
 		});
 	}
 
 	clearNoteLists() {
 		this.setState({ noteList: [] });
-		localStorage.setItem('storeNoteList', this.state.noteList);
+		API.setNoteList(this.state.noteList).then((res) => {
+			console.log(res);
+		});
 	}
 
 	componentDidMount() {
-		localStorage.getItem('storeNoteList') ? this.loadList() : this.clearNoteLists();
-		console.log(this.state.noteList);
+		API.getNoteList().then((res) => {
+			res.length ? this.loadList() : this.clearNoteLists();
+			console.log(this.state.noteList);
+		});
 	}
 
 	componentWillUnmount() {
-		this.updateLSList();
+		this.updateServerList();
 	}
 
 	handleTitleChange(event) {
@@ -61,7 +66,7 @@ export default class SubmitBox extends Component {
 				noteText: this.state.value,
 				id: resid
 			});
-			this.updateLSList();
+			this.updateServerList();
 			this.forceUpdate();
 		});
 	}
@@ -76,18 +81,21 @@ export default class SubmitBox extends Component {
 				}))
 			}),
 			() => {
-				this.updateLSList();
+				this.updateServerList();
 			}
 		);
 	}
 
-	updateLSList() {
+	updateServerList() {
 		var list = this.state.noteList.map((note) => ({
 			title: note.title,
 			noteText: note.noteText,
 			id: note.id
 		}));
-		localStorage.setItem('storeNoteList', JSON.stringify(list));
+		console.log('Hello from UpdateServerList()');
+		API.setNoteList(JSON.stringify(list)).then((res) => {
+			console.log('Hello' + res);
+		});
 	}
 
 	handleDelete(id) {
@@ -96,7 +104,7 @@ export default class SubmitBox extends Component {
 				noteList: prevState.noteList.filter((element) => element.id !== id)
 			}),
 			() => {
-				this.updateLSList();
+				this.updateServerList();
 			}
 		);
 	}
